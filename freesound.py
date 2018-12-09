@@ -2,7 +2,7 @@
 
 import re
 import sys
-import getopt
+import argparse
 import urllib
 import os.path
 from urllib import request
@@ -14,10 +14,12 @@ class FreesoundDownloader:
     def __init__(self):
         self.output_path = "downloads"
 
-    def _help(self):
-        """How to use the program."""
-        msg = "Usage: python3 freesound.py [option] [url]"
-        print(msg)
+    def _valid_url(self, url):
+        pattern = "https://freesound.org/people/[a-zA-Z0-9_]+/sounds/[0-9]+[\W]{0,2}"
+        match = re.match(pattern, url)
+        if not match:
+            print("Not a valid url.")
+        return match
 
     def _clean(self, string):
         """Replace undesired characters."""
@@ -51,25 +53,12 @@ class FreesoundDownloader:
 
     def main(self):
         """Handles the arguments from the user."""
-        try:
-            opts, args = getopt.getopt(
-                sys.argv[1:],
-                "hd:",
-                ["help", "download="]
-                )
-        except getopt.GetoptError as err:
-            self._help()
-            sys.exit(2)
+        parser = argparse.ArgumentParser()
+        parser.add_argument("url", help="url to the sound file's page.")
+        args = parser.parse_args()
 
-        for opt, arg in opts:
-            if opt in ('-d', '--download'):
-                self._download(arg)
-            elif opt in ("-h", "--help"):
-                self._help()
-                sys.exit()
-            else:
-                assert False, "unhandled option"
-
+        if self.valid_url(args.url):
+            self._download(args.url)
 
 if __name__ == "__main__":
 

@@ -15,7 +15,7 @@ class FreesoundDownloader:
         self.output_path = "downloads"
 
     def _valid_url(self, url):
-        pattern = "https://freesound.org/people/[a-zA-Z0-9_]+/sounds/[0-9]+[\W]{0,2}"
+        pattern = "https://freesound.org/people/[a-zA-Z0-9\W]+/sounds/[0-9]+[\W]{0,2}"
         match = re.match(pattern, url)
         if not match:
             print("Not a valid url.")
@@ -57,7 +57,7 @@ class FreesoundDownloader:
         parser.add_argument("url", help="url to the sound file's page.")
         args = parser.parse_args()
 
-        if self.valid_url(args.url):
+        if self._valid_url(args.url):
             self._download(args.url)
 
 if __name__ == "__main__":

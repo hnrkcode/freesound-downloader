@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 class FreesoundDownloader:
 
     def __init__(self):
-        self.output_path = "downloads"
+        self.output_path = os.path.join(os.path.dirname(__file__), "downloads")
 
     def _valid_url(self, url):
         pattern = "https://freesound.org/people/[a-zA-Z0-9\W]+/sounds/[0-9]+[\W]{0,2}"
